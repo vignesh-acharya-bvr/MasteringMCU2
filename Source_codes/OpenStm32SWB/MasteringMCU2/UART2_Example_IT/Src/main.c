@@ -28,25 +28,23 @@ uint8_t reception_complete = FALSE;
 
 int main(void)
 {
-	HAL_Init();
-	SystemClockConfig();
-	UART2_Init();
+    HAL_Init();                 // Initialize HAL
+    SystemClockConfig();        // Configure system clock
+    UART2_Init();               // Initialize UART2
 
-	uint16_t len_of_data = strlen(user_data);
-	HAL_UART_Transmit(&huart2,(uint8_t*)user_data,len_of_data,HAL_MAX_DELAY);
+    uint16_t len_of_data = strlen(user_data);
+    HAL_UART_Transmit(&huart2, (uint8_t*)user_data, len_of_data, HAL_MAX_DELAY); 
 
-
-    while(reception_complete != TRUE)
-    {
-    	HAL_UART_Receive_IT(&huart2,&recvd_data,1);
+    // Wait for reception to be completed 
+    while (reception_complete != TRUE) {
+        HAL_UART_Receive_IT(&huart2, &recvd_data, 1);   // Receive data via UART2 with interrupt
     }
 
+    while (1);  // Infinite loop to prevent program from exiting
 
-	while(1);
-
-
-	return 0;
+    return 0;
 }
+
 
 
 void SystemClockConfig(void)
